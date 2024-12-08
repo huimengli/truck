@@ -25,6 +25,7 @@ public class DragAndStickBehaviour : MonoBehaviour
     /// 当前对象上的接受点数组。
     /// 用于检测与吸附点的距离。
     /// </summary>
+    [ReadOnly]
     public Transform[] receptorPoints;
 
     /// <summary>
@@ -99,6 +100,7 @@ public class DragAndStickBehaviour : MonoBehaviour
         float distanceToCamera = Vector3.Distance(transform.position, Camera.main.transform.position);
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distanceToCamera));
         transform.position = new Vector3(mousePos.x, mousePos.y, transform.position.z); // 保持Z轴不变
+        //transform.position = mousePos;
 
         // 检查是否满足吸附条件
         bool canStick = CheckIfCanStick();
@@ -108,10 +110,11 @@ public class DragAndStickBehaviour : MonoBehaviour
             // 如果可以吸附，显示虚影并更新虚影位置
             if (shadow == null)
             {
-                shadow = Instantiate(shadowPrefab, transform.position, Quaternion.identity); // 创建虚影
+                shadow = Instantiate(shadowPrefab, transform.position,transform.rotation); // 创建虚影
             }
             shadow.SetActive(true);
-            shadow.transform.position = CalculateCenter(closestPointMap.ValuesToArray()); // 更新虚影位置到吸附点中心
+            var centerPoint = CalculateCenter(closestPointMap.ValuesToArray()); // 更新虚影位置到吸附点中心
+            shadow.transform.position = new Vector3(centerPoint.x, centerPoint.y + height / 2, centerPoint.z);
         }
         else if (shadow != null)
         {
@@ -162,6 +165,7 @@ public class DragAndStickBehaviour : MonoBehaviour
     void StickToObject()
     {
         Vector3 targetPosition = CalculateCenter(closestPointMap.ValuesToArray()); // 计算吸附点中心
+        targetPosition = new Vector3(targetPosition.x, targetPosition.y + height/2, targetPosition.z);
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime); // 平滑移动到目标位置
 
         if (Vector3.Distance(transform.position, targetPosition) <= 0.01f)
