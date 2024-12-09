@@ -111,10 +111,18 @@ public class DragAndStickBehaviour : MonoBehaviour
             if (shadow == null)
             {
                 shadow = Instantiate(shadowPrefab, transform.position,transform.rotation); // 创建虚影
+                if (shadow.GetComponent<ChangeOpacity>()==null)
+                {
+                    shadow.AddComponent<ChangeOpacity>();
+                }
             }
             shadow.SetActive(true);
             var centerPoint = CalculateCenter(closestPointMap.ValuesToArray()); // 更新虚影位置到吸附点中心
             shadow.transform.position = new Vector3(centerPoint.x, centerPoint.y + height / 2, centerPoint.z);
+            
+            ChangeOpacity opacity = shadow.GetComponent<ChangeOpacity>();
+            opacity.SetOpacity(0.4f);
+            Debug.Log(opacity.opacity);
         }
         else if (shadow != null)
         {
