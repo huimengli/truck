@@ -22,6 +22,12 @@ public class DragAndStickBehaviour : MonoBehaviour
     public GameObject shadowPrefab;
 
     /// <summary>
+    /// 虚影对象显示透明度
+    /// </summary>
+    [Range(0,1)]
+    public float shadowOpacity = 0.4f;
+
+    /// <summary>
     /// 当前对象上的接受点数组。
     /// 用于检测与吸附点的距离。
     /// </summary>
@@ -121,7 +127,7 @@ public class DragAndStickBehaviour : MonoBehaviour
             shadow.transform.position = new Vector3(centerPoint.x, centerPoint.y + height / 2, centerPoint.z);
             
             ChangeOpacity opacity = shadow.GetComponent<ChangeOpacity>();
-            opacity.SetOpacity(0.4f);
+            opacity.SetOpacity(shadowOpacity);
             Debug.Log(opacity.opacity);
         }
         else if (shadow != null)
