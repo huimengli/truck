@@ -13,7 +13,19 @@ public class DragAndStickBehaviour : MonoBehaviour
     /// 所有可能的吸附点（全局静态列表）。
     /// 这些点将作为所有拖拽物体的潜在吸附目标。
     /// </summary>
-    public static List<Transform> _points = new List<Transform>();
+    public static Dictionary<string, List<Transform>> _points = new Dictionary<string, List<Transform>>();
+
+    /// <summary>
+    /// 所有可能的吸附点（全局静态列表）。
+    /// 这些点将作为所有拖拽物体的潜在吸附目标。
+    /// </summary>
+    public static List<Transform> Points
+    {
+        get
+        {
+            return _points.ValuesToList().Join();
+        }
+    }
 
     /// <summary>
     /// 用于显示虚影的预制体。
@@ -151,7 +163,7 @@ public class DragAndStickBehaviour : MonoBehaviour
             Transform closest = null;
             float minDistance = stickDistance;
 
-            foreach (var point in _points)
+            foreach (var point in Points)
             {
                 float distance = Vector3.Distance(receptor.position, point.position);
                 if (distance < minDistance)
