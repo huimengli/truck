@@ -2,18 +2,36 @@ using Export.Attribute;
 using Export.AddFunc;
 using System.Collections.Generic;
 using UnityEngine;
+using Export.BehaviourEX;
+using System.Linq;
 
 /// <summary>
 /// 拖拽与吸附行为的基类。
 /// 提供拖拽、吸附点检测、以及吸附动作的实现。
 /// </summary>
-public class DragAndStickBehaviour : MonoBehaviour
+public class DragAndStickBehaviour : UUIDBehavior
 {
     /// <summary>
-    /// 所有可能的吸附点（全局静态列表）。
+    /// 所有可能的吸附点（全局静态字典）。
     /// 这些点将作为所有拖拽物体的潜在吸附目标。
     /// </summary>
     public static Dictionary<string, List<Transform>> _points = new Dictionary<string, List<Transform>>();
+
+    /// <summary>
+    /// 使用过的吸附点(全局静态字典)
+    /// </summary>
+    public static Dictionary<string, List<Transform>> _used = new Dictionary<string, List<Transform>>();
+
+    /// <summary>
+    /// 用过的吸附点列表
+    /// </summary>
+    public static List<Transform> Useds
+    {
+        get
+        {
+            return _used.ValuesToList().Join();
+        }
+    }
 
     /// <summary>
     /// 所有可能的吸附点（全局静态列表）。
@@ -23,10 +41,10 @@ public class DragAndStickBehaviour : MonoBehaviour
     {
         get
         {
-            return _points.ValuesToList().Join();
+            return _points.ValuesToList().Join().Where(p=>!Useds.Contains(p)).ToList();
         }
     }
-
+    
     /// <summary>
     /// 用于显示虚影的预制体。
     /// 在拖拽过程中，虚影显示潜在吸附位置。
@@ -106,6 +124,16 @@ public class DragAndStickBehaviour : MonoBehaviour
         {
             StickToObject(); // 如果未完成吸附，执行吸附逻辑
         }
+
+        // 吸附完成
+        if (isSticked)
+        {
+            _used.AddOrSet(UUID, closestPointMap.ValuesToList());
+        }
+        else
+        {
+            _used.Remove(UUID);
+        }
     }
 
     /// <summary>
@@ -129,9 +157,16 @@ public class DragAndStickBehaviour : MonoBehaviour
             if (shadow == null)
             {
                 shadow = Instantiate(shadowPrefab, transform.position,transform.rotation); // 创建虚影
+                // 如果阴影对象没有透明度修改模块则添加
                 if (shadow.GetComponent<ChangeOpacity>()==null)
                 {
                     shadow.AddComponent<ChangeOpacity>();
+                }
+                // 如果阴影对象有拖动模块则删除
+                DragAndStick drag = shadow.GetComponent<DragAndStick>();
+                if (drag!=null)
+                {
+                    Destroy(drag);
                 }
             }
             shadow.SetActive(true);

@@ -12,6 +12,9 @@ GameObject:
   - component: {fileID: 340715438635465269}
   - component: {fileID: 340715438635465268}
   - component: {fileID: 340715438635465275}
+  - component: {fileID: 1151216892536626087}
+  - component: {fileID: 2400218601543545711}
+  - component: {fileID: 9102405299701766958}
   m_Layer: 0
   m_Name: Good1x2Bt1x1A_C
   m_TagString: Untagged
@@ -98,6 +101,58 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1151216892536626087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340715438635465274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f80f772a916afc44aeae79ca7dedf3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uuid: 
+  addPointsName: ContactPointA
+  dragScript: {fileID: 2400218601543545711}
+  points: []
+--- !u!114 &2400218601543545711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340715438635465274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b11b4078b0487c42aac9bdc89cbd2c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowPrefab: {fileID: 340715438635465274}
+  shadowOpacity: 0.4
+  receptorPoints: []
+  stickDistance: 0.5
+  moveSpeed: 5
+  height: 1
+  isDragging: 0
+  isSticking: 0
+  isSticked: 0
+  receptorPointName: ReceptorPointB
+--- !u!114 &9102405299701766958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340715438635465274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -771544027, guid: 88543e3abadf90a448b0653be5af78ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseForm: 0
+  value: "\u63D0\u4F9B\u4E24\u4E2A\u63A5\u6536\u70B9B,\u63D0\u4F9B\u4E00\u4E2A\u652F\u6491\u70B9A"
 --- !u!1001 &340715437797755094
 PrefabInstance:
   m_ObjectHideFlags: 0

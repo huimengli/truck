@@ -1,4 +1,6 @@
-﻿using Export.Attribute;
+﻿using Export.AddFunc;
+using Export.Attribute;
+using Export.BehaviourEX;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +14,8 @@ namespace Export.Tools
     /// <summary>
     /// 添加DropAndStick的点
     /// </summary>
-    class AddDASPoint:MonoBehaviour
+    class AddDASPoint: UUIDBehavior
     {
-        /// <summary>
-        /// 用于生成UUID的随机数模块
-        /// </summary>
-        private static System.Random random = new System.Random();
-
-        /// <summary>
-        /// 当前组件UUID
-        /// </summary>
-        [SerializeField]
-        [ReadOnly]
-        public string uuid;
-
         /// <summary>
         /// 追加点位名称
         /// </summary>
@@ -61,11 +51,6 @@ namespace Export.Tools
             }
         }
 
-        private void Awake()
-        {
-            this.uuid = Item.NewUUID(random.NextDouble().ToString());
-        }
-
         private void Start()
         {
             readName = new Regex(addPointsName);
@@ -75,7 +60,7 @@ namespace Export.Tools
 
             if (dragScript == null)
             {
-                DragAndStickBehaviour._points.Add(uuid,Points);
+                DragAndStickBehaviour._points.Add(UUID,Points);
             }
         }
 
@@ -85,11 +70,11 @@ namespace Export.Tools
             {
                 if (dragScript.isSticked)
                 {
-                    DragAndStickBehaviour._points.Add(uuid,Points);
+                    DragAndStickBehaviour._points.AddOrSet(UUID,Points);
                 }
                 else
                 {
-                    DragAndStickBehaviour._points.Remove(uuid);
+                    DragAndStickBehaviour._points.Remove(UUID);
                 }
             }
         }

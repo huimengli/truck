@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b11b4078b0487c42aac9bdc89cbd2c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shadowPrefab: {fileID: 9078896603941387560, guid: c5012a48c7be0f1409d9a28287088889, type: 3}
+  shadowPrefab: {fileID: 9022362623300699043}
   shadowOpacity: 0.4
   receptorPoints: []
   stickDistance: 0.5

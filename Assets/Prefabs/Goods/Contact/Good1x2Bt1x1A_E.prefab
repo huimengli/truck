@@ -12,6 +12,9 @@ GameObject:
   - component: {fileID: 3796235649217976033}
   - component: {fileID: 3796235649217976032}
   - component: {fileID: 3796235649217976047}
+  - component: {fileID: 4112213179925203398}
+  - component: {fileID: 5233786125986090614}
+  - component: {fileID: 8700976651362084605}
   m_Layer: 0
   m_Name: Good1x2Bt1x1A_E
   m_TagString: Untagged
@@ -98,6 +101,58 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4112213179925203398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3796235649217976046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -771544027, guid: 88543e3abadf90a448b0653be5af78ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseForm: 0
+  value: "\u7279\u6B8A\u8D27\u7269,\u63D0\u4F9B\u4E24\u4E2A\u63A5\u53D7\u70B9B\u548C\u4E00\u4E2A\u652F\u6491\u70B9A,\u652F\u6491\u70B9\u4E0D\u5728\u4E2D\u5FC3"
+--- !u!114 &5233786125986090614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3796235649217976046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b11b4078b0487c42aac9bdc89cbd2c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shadowPrefab: {fileID: 3796235649217976046}
+  shadowOpacity: 0.4
+  receptorPoints: []
+  stickDistance: 0.5
+  moveSpeed: 5
+  height: 1
+  isDragging: 0
+  isSticking: 0
+  isSticked: 0
+  receptorPointName: ReceptorPointB
+--- !u!114 &8700976651362084605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3796235649217976046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f80f772a916afc44aeae79ca7dedf3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uuid: 
+  addPointsName: ContactPointA
+  dragScript: {fileID: 5233786125986090614}
+  points: []
 --- !u!1001 &3796235649076777110
 PrefabInstance:
   m_ObjectHideFlags: 0
