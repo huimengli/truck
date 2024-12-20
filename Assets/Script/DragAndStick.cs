@@ -1,18 +1,42 @@
-﻿using System.Linq;
+﻿using Export.Attribute;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-class DragAndStick : DragAndStickBehaviour
+/// <summary>
+/// 拖拽功能实现
+/// </summary>
+public class DragAndStick : DragAndStickBehaviour
 {
+    /// <summary>
+    /// 游戏调用代码
+    /// </summary>
+    [ReadOnly]
+    public GameConfig config;
+
     /// <summary>
     /// 用于筛选接受点的正则表达式。
     /// </summary>
+    [SerializeField]
+    [ReadOnly]
     public string receptorPointName;
 
     /// <summary>
     /// 用于读取接受点名称的正则表达式对象。
     /// </summary>
     private Regex readName;
+
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    private void Awake()
+    {
+        config = FindObjectOfType<GameConfig>();
+        receptorPointName = config.ReceptorPointName + type.GetValue();
+
+        // 调用基类初始化逻辑
+        Init();
+    }
 
     /// <summary>
     /// 初始化方法，筛选符合条件的接受点。

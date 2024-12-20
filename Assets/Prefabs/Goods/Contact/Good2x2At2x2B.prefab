@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1004349108543727141}
   - component: {fileID: 1004349108543727146}
   - component: {fileID: 1004349108543727147}
+  - component: {fileID: 8944877247996182535}
   m_Layer: 0
   m_Name: Good2x2At2x2B
   m_TagString: Untagged
@@ -103,6 +104,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8944877247996182535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1004349108543727144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f80f772a916afc44aeae79ca7dedf3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addPointsName: 
+  dragScript: {fileID: 0}
+  type: 2
+  points: []
 --- !u!1001 &73680604397275209
 PrefabInstance:
   m_ObjectHideFlags: 0

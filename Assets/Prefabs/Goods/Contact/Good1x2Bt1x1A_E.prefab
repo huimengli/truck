@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b11b4078b0487c42aac9bdc89cbd2c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 2
   shadowPrefab: {fileID: 3796235649217976046}
   shadowOpacity: 0.4
   receptorPoints: []
@@ -149,9 +150,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f80f772a916afc44aeae79ca7dedf3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uuid: 
   addPointsName: ContactPointA
   dragScript: {fileID: 5233786125986090614}
+  type: 1
   points: []
 --- !u!1001 &3796235649076777110
 PrefabInstance:

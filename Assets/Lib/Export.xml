@@ -57,7 +57,7 @@
         </member>
         <member name="M:Export.AddFunc.DictionaryAdd.AddOrSet``2(System.Collections.Generic.Dictionary{``0,``1},``0,``1)">
             <summary>
-            如果字典中不存在指定的键，则添加键值对；
+            如果字典中不存在指定的键，则添加键值对,
             如果字典中已存在指定的键，则更新其值。
             </summary>
             <typeparam name="TKey">字典的键类型</typeparam>
@@ -167,6 +167,24 @@
             </summary>
             <typeparam name="T"></typeparam>
             <param name="ts"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Export.AddFunc.ListAdd.ToDict``1(System.Collections.Generic.List{``0})">
+            <summary>
+            转为字典
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="ts"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Export.AddFunc.ListAdd.ToDict``2(System.Collections.Generic.List{``1},System.Func{``1,``0})">
+            <summary>
+            转为字典
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="T"></typeparam>
+            <param name="ts"></param>
+            <param name="getKey">获取Key方法</param>
             <returns></returns>
         </member>
         <member name="T:Export.Attribute.ReadOnlyAttribute">
@@ -585,8 +603,65 @@
             <summary>
             获取或设置与指定的键关联的值
             </summary>
-            <param name="key"></param>
-            <returns></returns>
+            <param name="key">要获取或设置的值的键。</param>
+            <returns>与指定的键相关联的值。 如果指定键未找到，则 Get 操作引发 System.Collections.Generic.KeyNotFoundException，而 Set 操作创建一个带指定键的新元素。</returns>
+            <exception cref="T:System.ArgumentNullException">key 为 null</exception>
+        </member>
+        <member name="M:Export.Class.DictionaryEX`2.ToString">
+            <summary>
+            默认的 ToString 方法，返回字典的字符串表示。
+            </summary>
+            <returns>字典的字符串表示。</returns>
+        </member>
+        <member name="M:Export.Class.DictionaryEX`2.ToString(System.Int32)">
+            <summary>
+            带有缩进的 ToString 方法，根据给定的缩进值返回字典的字符串表示。
+            </summary>
+            <param name="indentation">缩进的空格数。</param>
+            <returns>字典的字符串表示。</returns>
+        </member>
+        <member name="M:Export.Class.DictionaryEX`2.ToString(System.Int32,System.Boolean)">
+            <summary>
+            带有缩进和简洁名称选项的 ToString 方法，返回字典的字符串表示。
+            </summary>
+            <param name="indentation">缩进的空格数。</param>
+            <param name="isSimple">是否使用简洁类名（默认为true）。</param>
+            <returns>字典的字符串表示。</returns>
+        </member>
+        <member name="M:Export.Class.DictionaryEX`2.ToString(System.Int32,System.String)">
+            <summary>
+            带有缩进和自定义类型名称的 ToString 方法，返回字典的字符串表示。
+            </summary>
+            <param name="indentation">缩进的空格数。</param>
+            <param name="dictionaryName">字典的自定义名称。</param>
+            <returns>字典的字符串表示。</returns>
+        </member>
+        <member name="M:Export.Class.DictionaryEX`2.ToString(System.Int32,System.Boolean,System.Type)">
+            <summary>
+            带有缩进、简洁名称和类型的 ToString 方法，返回字典的字符串表示。
+            </summary>
+            <param name="indentation">缩进的空格数。</param>
+            <param name="isSimple">是否使用简洁类名（默认为true）。</param>
+            <param name="type">字典类型。</param>
+            <returns>字典的字符串表示。</returns>
+        </member>
+        <member name="M:Export.Class.DictionaryEX`2.ToString(System.Int32,System.Boolean,System.String)">
+            <summary>
+            核心的 ToString 方法，格式化字典的字符串表示。
+            </summary>
+            <param name="indentation">缩进的空格数。</param>
+            <param name="isSimple">是否使用简洁类名（默认为true）。</param>
+            <param name="dictionaryName">字典的自定义名称。</param>
+            <returns>字典的字符串表示。</returns>
+        </member>
+        <member name="M:Export.Class.DictionaryEX`2.FormatValue(System.Object,System.Int32,System.Boolean)">
+            <summary>
+            格式化字典中的值，根据不同类型的值返回相应的字符串表示。
+            </summary>
+            <param name="value">字典中的值。</param>
+            <param name="indentation">缩进的空格数。</param>
+            <param name="isSimple">是否使用简洁类名（默认为true）。</param>
+            <returns>格式化后的值的字符串表示。</returns>
         </member>
         <member name="T:Export.Class.DictionaryEXAdd">
             <summary>

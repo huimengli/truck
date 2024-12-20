@@ -12,39 +12,31 @@ using System.Linq;
 public class DragAndStickBehaviour : UUIDBehavior
 {
     /// <summary>
-    /// 所有可能的吸附点（全局静态字典）。
-    /// 这些点将作为所有拖拽物体的潜在吸附目标。
+    /// 点类型
     /// </summary>
-    public static Dictionary<string, List<Transform>> _points = new Dictionary<string, List<Transform>>();
+    public SupportPointType type;
 
     /// <summary>
-    /// 使用过的吸附点(全局静态字典)
+    /// 点数据
     /// </summary>
-    public static Dictionary<string, List<Transform>> _used = new Dictionary<string, List<Transform>>();
+    public Dictionary<string, List<Transform>> _points;
 
     /// <summary>
-    /// 用过的吸附点列表
+    /// 用过的点数据
     /// </summary>
-    public static List<Transform> Useds
+    public Dictionary<string, List<Transform>> _used;
+
+    /// <summary>
+    /// 可用的点数据
+    /// </summary>
+    public List<Transform> Points
     {
         get
         {
-            return _used.ValuesToList().Join();
+            return PointPool.getPoints(type);
         }
     }
 
-    /// <summary>
-    /// 所有可能的吸附点（全局静态列表）。
-    /// 这些点将作为所有拖拽物体的潜在吸附目标。
-    /// </summary>
-    public static List<Transform> Points
-    {
-        get
-        {
-            return _points.ValuesToList().Join().Where(p=>!Useds.Contains(p)).ToList();
-        }
-    }
-    
     /// <summary>
     /// 用于显示虚影的预制体。
     /// 在拖拽过程中，虚影显示潜在吸附位置。
@@ -110,6 +102,15 @@ public class DragAndStickBehaviour : UUIDBehavior
     /// 确保吸附点与接受点一一对应。
     /// </summary>
     protected Dictionary<Transform, Transform> closestPointMap = new Dictionary<Transform, Transform>();
+
+    /// <summary>
+    /// 内部初始化
+    /// </summary>
+    protected void Init()
+    {
+        _points = PointPool._points[type];
+        _used = PointPool._used[type];
+    }
 
     /// <summary>
     /// 每帧更新拖拽与吸附逻辑。
