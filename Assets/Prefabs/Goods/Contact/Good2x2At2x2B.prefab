@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 1004349108543727146}
   - component: {fileID: 1004349108543727147}
   - component: {fileID: 8944877247996182535}
+  - component: {fileID: 5712526941429659097}
+  - component: {fileID: 6966653207776246717}
   m_Layer: 0
   m_Name: Good2x2At2x2B
   m_TagString: Untagged
@@ -116,10 +118,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f80f772a916afc44aeae79ca7dedf3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  config: {fileID: 0}
   addPointsName: 
-  dragScript: {fileID: 0}
+  dragScript: {fileID: 6966653207776246717}
   type: 2
   points: []
+--- !u!114 &5712526941429659097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1004349108543727144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -771544027, guid: 88543e3abadf90a448b0653be5af78ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseForm: 0
+  value: "\u5927\u578B\u8D27\u7269,\u9700\u89814\u4E2A\u652F\u6491\u70B9A\u63D0\u4F9B\u56DB\u4E2A\u652F\u6491\u70B9B"
+--- !u!114 &6966653207776246717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1004349108543727144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b11b4078b0487c42aac9bdc89cbd2c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  shadowPrefab: {fileID: 1004349108543727144}
+  shadowOpacity: 0.4
+  receptorPoints: []
+  stickDistance: 0.5
+  moveSpeed: 5
+  height: 1
+  isDragging: 0
+  isSticking: 0
+  isSticked: 0
+  config: {fileID: 0}
+  receptorPointName: 
 --- !u!1001 &73680604397275209
 PrefabInstance:
   m_ObjectHideFlags: 0

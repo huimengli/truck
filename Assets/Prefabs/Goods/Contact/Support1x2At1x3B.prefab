@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 8914378329825035995}
   - component: {fileID: 8914378329825035994}
   - component: {fileID: 8914378329825035997}
+  - component: {fileID: 7248274760416320276}
+  - component: {fileID: 7013217235340584827}
   m_Layer: 0
   m_Name: Support1x2At1x3B
   m_TagString: Untagged
@@ -110,10 +112,52 @@ MonoBehaviour:
   m_GameObject: {fileID: 8914378329825035996}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -771544027, guid: b4e8d212b53892d4198f06a72c4f2fbd, type: 3}
+  m_Script: {fileID: -771544027, guid: 88543e3abadf90a448b0653be5af78ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  value: "\u8FD9\u662F\u4E00\u4E2A\u652F\u6491\u7EC4\u4EF6,\u5C062\u4E2AA\u652F\u6491\u70B9\u8F6C\u4E3A3\u4E2AB\u652F\u6491\u70B9"
+  UseForm: 0
+  value: "\u7279\u6B8A\u578B\u8D27\u7269,\u9700\u8981\u4E24\u4E2A\u652F\u6491\u70B9A,\u63D0\u4F9B\u4E09\u4E2A\u652F\u6491\u70B9B"
+--- !u!114 &7248274760416320276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8914378329825035996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b11b4078b0487c42aac9bdc89cbd2c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  shadowPrefab: {fileID: 8914378329825035996}
+  shadowOpacity: 0.4
+  receptorPoints: []
+  stickDistance: 0.5
+  moveSpeed: 5
+  height: 1
+  isDragging: 0
+  isSticking: 0
+  isSticked: 0
+  config: {fileID: 0}
+  receptorPointName: 
+--- !u!114 &7013217235340584827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8914378329825035996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f80f772a916afc44aeae79ca7dedf3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  config: {fileID: 0}
+  addPointsName: 
+  dragScript: {fileID: 7248274760416320276}
+  type: 2
+  points: []
 --- !u!1001 &8914378329311723021
 PrefabInstance:
   m_ObjectHideFlags: 0

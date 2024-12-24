@@ -69,12 +69,6 @@ public class DragAndStickBehaviour : UUIDBehavior
     public float moveSpeed = 5f;
 
     /// <summary>
-    /// 拖拽物体的高度。
-    /// 用于调整物体吸附时的位置，使其与吸附点对齐。
-    /// </summary>
-    public float height = 1f;
-
-    /// <summary>
     /// 当前物体是否正在被拖拽。
     /// </summary>
     [ReadOnly]
@@ -171,9 +165,16 @@ public class DragAndStickBehaviour : UUIDBehavior
                 }
             }
             shadow.SetActive(true);
-            var centerPoint = CalculateCenter(closestPointMap.ValuesToArray()); // 更新虚影位置到吸附点中心
-            shadow.transform.position = new Vector3(centerPoint.x, centerPoint.y + height / 2, centerPoint.z);
-            
+            Vector3 currentPosition = CalculateCenter(receptorPoints.ToArray()); // 计算当前吸附的中心
+            Vector3 targetPosition = CalculateCenter(closestPointMap.ValuesToArray()); // 计算吸附点中心
+                                                                                       //targetPosition = new Vector3(targetPosition.x, targetPosition.y + height/2, targetPosition.z);
+            targetPosition = new Vector3(
+                targetPosition.x - currentPosition.x + transform.position.x,
+                targetPosition.y - currentPosition.y + transform.position.y,
+                targetPosition.z - currentPosition.z + transform.position.z
+            );
+            shadow.transform.position = targetPosition;
+
             ChangeOpacity opacity = shadow.GetComponent<ChangeOpacity>();
             opacity.SetOpacity(shadowOpacity);
             Debug.Log(opacity.opacity);
@@ -226,8 +227,14 @@ public class DragAndStickBehaviour : UUIDBehavior
     /// </summary>
     void StickToObject()
     {
+        Vector3 currentPosition = CalculateCenter(receptorPoints.ToArray()); // 计算当前吸附的中心
         Vector3 targetPosition = CalculateCenter(closestPointMap.ValuesToArray()); // 计算吸附点中心
-        targetPosition = new Vector3(targetPosition.x, targetPosition.y + height/2, targetPosition.z);
+        //targetPosition = new Vector3(targetPosition.x, targetPosition.y + height/2, targetPosition.z);
+        targetPosition = new Vector3(
+            targetPosition.x - currentPosition.x + transform.position.x,
+            targetPosition.y - currentPosition.y + transform.position.y,
+            targetPosition.z - currentPosition.z + transform.position.z
+        );
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime); // 平滑移动到目标位置
 
         if (Vector3.Distance(transform.position, targetPosition) <= 0.01f)
