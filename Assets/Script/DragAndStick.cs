@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// 拖拽功能实现
@@ -57,5 +58,11 @@ public class DragAndStick : DragAndStickBehaviour
     void Update()
     {
         Upgrade(); // 调用基类的更新逻辑
+
+        // 添加右键点击触发物品旋转功能
+        if (isDragging && Input.GetMouseButtonUp(1))
+        {
+            transform.rotation *= Quaternion.Euler(0, 90, 0); // 在当前旋转基础上增加90度
+        }
     }
 }

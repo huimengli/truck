@@ -164,6 +164,10 @@ public class DragAndStickBehaviour : UUIDBehavior
                     Destroy(drag);
                 }
             }
+            else
+            {
+                shadow.transform.rotation = transform.rotation; // 修改旋转角度
+            }
             shadow.SetActive(true);
 
             Vector3 currentPosition = CalculateCenter(receptorPoints.ToArray()); // 计算当前吸附的中心
@@ -177,7 +181,6 @@ public class DragAndStickBehaviour : UUIDBehavior
 
             ChangeOpacity opacity = shadow.GetComponent<ChangeOpacity>();
             opacity.SetOpacity(shadowOpacity);
-            Debug.Log(opacity.opacity);
         }
         else if (shadow != null)
         {
@@ -255,7 +258,7 @@ public class DragAndStickBehaviour : UUIDBehavior
     /// </summary>
     /// <param name="points">Transform数组。</param>
     /// <returns>中心点位置。</returns>
-    private Vector3 CalculateCenter(Transform[] points)
+    protected private Vector3 CalculateCenter(Transform[] points)
     {
         Vector3 center = Vector3.zero;
         foreach (var point in points)
@@ -268,7 +271,7 @@ public class DragAndStickBehaviour : UUIDBehavior
     /// <summary>
     /// 当鼠标按下时，开始拖拽。
     /// </summary>
-    void OnMouseDown()
+    protected void OnMouseDown()
     {
         isDragging = true; // 启用拖拽
         isSticked = false; // 重置吸附状态
@@ -277,7 +280,7 @@ public class DragAndStickBehaviour : UUIDBehavior
     /// <summary>
     /// 当鼠标松开时，停止拖拽并开始吸附。
     /// </summary>
-    void OnMouseUp()
+    protected void OnMouseUp()
     {
         isDragging = false; // 停止拖拽
         if (shadow != null && shadow.activeSelf)
