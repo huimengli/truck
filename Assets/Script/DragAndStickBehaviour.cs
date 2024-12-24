@@ -165,9 +165,9 @@ public class DragAndStickBehaviour : UUIDBehavior
                 }
             }
             shadow.SetActive(true);
+
             Vector3 currentPosition = CalculateCenter(receptorPoints.ToArray()); // 计算当前吸附的中心
             Vector3 targetPosition = CalculateCenter(closestPointMap.ValuesToArray()); // 计算吸附点中心
-                                                                                       //targetPosition = new Vector3(targetPosition.x, targetPosition.y + height/2, targetPosition.z);
             targetPosition = new Vector3(
                 targetPosition.x - currentPosition.x + transform.position.x,
                 targetPosition.y - currentPosition.y + transform.position.y,
