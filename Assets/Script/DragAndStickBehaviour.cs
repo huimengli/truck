@@ -140,8 +140,14 @@ public class DragAndStickBehaviour : UUIDBehavior
         // 计算鼠标在世界空间中的位置
         float distanceToCamera = Vector3.Distance(transform.position, Camera.main.transform.position);
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, distanceToCamera));
-        transform.position = new Vector3(mousePos.x, mousePos.y, transform.position.z); // 保持Z轴不变
-        //transform.position = mousePos;
+        transform.position = new Vector3(mousePos.x, transform.position.y, mousePos.y); // 保持Y轴不变
+
+        // 检测鼠标滚轮输入，并修改 Y 轴位置
+        float scroll = Input.GetAxis("Mouse ScrollWheel"); // 获取滚轮滚动值
+        if (scroll != 0)
+        {
+            transform.position += new Vector3(0, scroll * 0.5f, 0); // 修改 Y 轴，0.5f 为滚动的速度系数，可自行调整
+        }
 
         // 检查是否满足吸附条件
         bool canStick = CheckIfCanStick();
