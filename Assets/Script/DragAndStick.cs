@@ -1,8 +1,12 @@
 ﻿using Export.Attribute;
+using Export.Tools;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Export.AddFunc;
+using UnityEngine.UIElements;
+using System.Collections.Generic;
 
 /// <summary>
 /// 拖拽功能实现
@@ -28,6 +32,34 @@ public class DragAndStick : DragAndStickBehaviour
     private Regex readName;
 
     /// <summary>
+    /// 吸附失败后是否还显示
+    /// </summary>
+    public bool stickFailDisplay;
+
+    /// <summary>
+    /// 需要忽略的的碰撞体
+    /// </summary>
+    private List<Collider> ignoreColliders = new List<Collider>();
+
+    /// <summary>
+    /// 当前物体的高度
+    /// </summary>
+    [ReadOnly]
+    [SerializeField]
+    public float height = 0f;
+
+    /// <summary>
+    /// 当前物体的高度
+    /// </summary>
+    public float Height
+    {
+        get
+        {
+            return height;
+        }
+    }
+
+    /// <summary>
     /// 初始化
     /// </summary>
     private void Awake()
@@ -35,8 +67,18 @@ public class DragAndStick : DragAndStickBehaviour
         config = FindObjectOfType<GameConfig>();
         receptorPointName = config.ReceptorPointName + type.GetValue();
 
+        // 计算当前物体的高度
+        Mesh mesh = GetComponent<MeshFilter>().sharedMesh;
+        float originalHeight = mesh.bounds.size.y;
+        float scaledHeight = originalHeight * transform.localScale.y;
+        height = scaledHeight;
+
         // 调用基类初始化逻辑
         Init();
+
+        // 添加碰撞体
+        ignoreColliders.AddRange(GetComponents<Collider>());
+        ignoreColliders.AddRange(GetComponentsInChildren<Collider>());
     }
 
     /// <summary>
@@ -63,6 +105,121 @@ public class DragAndStick : DragAndStickBehaviour
         if (isDragging && Input.GetMouseButtonUp(1))
         {
             transform.rotation *= Quaternion.Euler(0, 90, 0); // 在当前旋转基础上增加90度
+        }
+    }
+
+    /// <summary>
+    /// 修改拖着物品逻辑
+    /// 根据鼠标未知更新物体未知,并且显示是否可以吸附
+    /// </summary>
+    protected override void DragObject()
+    {
+        // 创建屏幕射线
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        Vector3 intersectionPoint = transform.position;
+        // 射线检测
+        RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity);
+        Debug.Log(hits.Length);
+        if (hits.Length>1)
+        {
+            foreach (var hit in hits.OrderBy(h=>h.distance))
+            {
+                if (!ignoreColliders.Contains(hit.collider))
+                {
+                    intersectionPoint = hit.point; // 获取射线与物体的交点
+                    break;
+                }
+            }
+        }
+
+        // 更新物体位置
+        transform.position = new Vector3(
+            intersectionPoint.x,
+            intersectionPoint.y + Height/2,
+            intersectionPoint.z
+        );
+
+        // 检查是否满足吸附条件
+        bool canStick = CheckIfCanStick();
+
+        if (canStick)
+        {
+            // 如果可以吸附，显示虚影并更新虚影位置
+            if (shadow == null)
+            {
+                shadow = Instantiate(shadowPrefab, transform.position, transform.rotation); // 创建虚影
+                // 如果阴影对象没有透明度修改模块则添加
+                if (shadow.GetComponent<ChangeRGBA>() == null)
+                {
+                    shadow.AddComponent<ChangeRGBA>();
+                }
+                // 如果阴影有碰撞体则删除
+                if (shadow.GetComponents<Collider>().Length>0)
+                {
+                    foreach (var collider in new List<Collider[]>()
+                    {
+                        shadow.GetComponents<Collider>(),
+                        shadow.GetComponentsInChildren<Collider>()
+                    }.Map(colliders =>
+                    {
+                        List<Collider> list = new List<Collider>();
+                        list.AddRange(colliders);
+                        return list;
+                    }).Join())
+                    {
+                        Destroy(collider);
+                    }
+                }
+                // 如果阴影对象有拖动模块则删除
+                DragAndStick drag = shadow.GetComponent<DragAndStick>();
+                if (drag != null)
+                {
+                    Destroy(drag);
+                }
+            }
+            else
+            {
+                shadow.transform.rotation = transform.rotation; // 修改旋转角度
+            }
+            shadow.SetActive(true);
+
+            Vector3 currentPosition = CalculateCenter(receptorPoints.ToArray()); // 计算当前吸附的中心
+            Vector3 targetPosition = CalculateCenter(closestPointMap.ValuesToArray()); // 计算吸附点中心
+            targetPosition = new Vector3(
+                targetPosition.x - currentPosition.x + transform.position.x,
+                targetPosition.y - currentPosition.y + transform.position.y,
+                targetPosition.z - currentPosition.z + transform.position.z
+            );
+            shadow.transform.position = targetPosition; // 更新虚影位置
+
+            ChangeRGBA shadowRGBA = shadow.GetComponent<ChangeRGBA>();
+            shadowRGBA.SetOpacity(shadowOpacity); // 设置虚影透明度
+
+            // 如果物体没有 ChangeRGBA 组件，则添加
+            if (GetComponent<ChangeRGBA>() == null)
+            {
+                gameObject.AddComponent<ChangeRGBA>();
+            }
+            // 物品显示为绿色
+            ChangeRGBA change = GetComponent<ChangeRGBA>();
+            change.SetColor(0.5f, 1f, 0.5f, shadowOpacity); // 绿色
+        }
+        else
+        {
+            // 如果不满足吸附条件，隐藏虚影
+            if (shadow != null)
+            {
+                shadow.SetActive(false);
+            }
+            // 如果物体没有 ChangeRGBA 组件，则添加
+            if (GetComponent<ChangeRGBA>() == null)
+            {
+                gameObject.AddComponent<ChangeRGBA>();
+            }
+            // 物品显示为红色
+            ChangeRGBA change = GetComponent<ChangeRGBA>();
+            change.SetColor(1f,0.5f, 0.5f, shadowOpacity); // 红色
         }
     }
 }

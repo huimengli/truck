@@ -176,21 +176,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7248274760416320276, guid: 227122a5b32dd7e4793a6398dc9b8f27, type: 3}
+      propertyPath: height
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8914378329825035993, guid: 227122a5b32dd7e4793a6398dc9b8f27, type: 3}
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8914378329825035993, guid: 227122a5b32dd7e4793a6398dc9b8f27, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.8573265
+      value: 4.08
       objectReference: {fileID: 0}
     - target: {fileID: 8914378329825035993, guid: 227122a5b32dd7e4793a6398dc9b8f27, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.0082979
+      value: 0.84
       objectReference: {fileID: 0}
     - target: {fileID: 8914378329825035993, guid: 227122a5b32dd7e4793a6398dc9b8f27, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.96
+      value: -1.28
       objectReference: {fileID: 0}
     - target: {fileID: 8914378329825035993, guid: 227122a5b32dd7e4793a6398dc9b8f27, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1017,6 +1021,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f80f772a916afc44aeae79ca7dedf3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UUID: 6Cf8134c-195e-7965-87df-59c0741f
   config: {fileID: 0}
   addPointsName: ContactPointA
   dragScript: {fileID: 0}

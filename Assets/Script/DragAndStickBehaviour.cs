@@ -134,8 +134,9 @@ public class DragAndStickBehaviour : UUIDBehavior
     /// <summary>
     /// 执行拖拽逻辑。
     /// 根据鼠标位置更新物体位置，并判断是否可以吸附。
+    /// 这个方法能用,但是效果不好
     /// </summary>
-    void DragObject()
+    protected virtual void DragObject()
     {
         // 计算鼠标在世界空间中的位置
         float distanceToCamera = Vector3.Distance(transform.position, Camera.main.transform.position);
@@ -199,7 +200,7 @@ public class DragAndStickBehaviour : UUIDBehavior
     /// 遍历所有接受点，找到与其距离最近的吸附点，并记录。
     /// </summary>
     /// <returns>是否满足吸附条件。</returns>
-    private bool CheckIfCanStick()
+    protected bool CheckIfCanStick()
     {
         closestPointMap.Clear(); // 清空当前记录的最近吸附点
         bool canStick = true;
