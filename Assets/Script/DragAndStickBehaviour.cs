@@ -235,7 +235,7 @@ public class DragAndStickBehaviour : UUIDBehavior
     /// 执行吸附逻辑。
     /// 将物体移动到吸附点中心位置，直到吸附完成。
     /// </summary>
-    void StickToObject()
+    protected virtual void StickToObject()
     {
         Vector3 currentPosition = CalculateCenter(receptorPoints.ToArray()); // 计算当前吸附的中心
         Vector3 targetPosition = CalculateCenter(closestPointMap.ValuesToArray()); // 计算吸附点中心

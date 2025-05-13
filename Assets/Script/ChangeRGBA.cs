@@ -96,16 +96,19 @@ public class ChangeRGBA : MonoBehaviour
     private void InitializeMaterials()
     {
         rend = GetComponent<Renderer>();
+
+        // 父物体材质实例化
+        rend.material = new Material(rend.material);
         mat = rend.material;
 
-        // 遍历子对象创建独立材质实例
-        foreach (Transform child in GetComponentsInChildren<Transform>())
+        // 子物体处理（含嵌套子级）
+        foreach (var childRenderer in GetComponentsInChildren<Renderer>(true))
         {
-            var childRenderer = child.GetComponent<Renderer>();
-            if (childRenderer != null)
-            {
-                childRenderer.material = new Material(childRenderer.material);
-            }
+            if (childRenderer.GetComponent<ChangeRGBA>() != null) continue;
+            childRenderer.material = new Material(childRenderer.material);
+
+            // 立即应用初始颜色
+            childRenderer.material.color = new Color(r, g, b, a);
         }
     }
 
@@ -164,15 +167,50 @@ public class ChangeRGBA : MonoBehaviour
     private void UpdateBlendMode(Material material)
     {
         bool isTransparent = a < 1f;
+        Color targetColor = new Color(r, g, b, a);
 
-        material.SetInt("_SrcBlend", (int)(isTransparent ? BlendMode.SrcAlpha : BlendMode.One));
-        material.SetInt("_DstBlend", (int)(isTransparent ? BlendMode.OneMinusSrcAlpha : BlendMode.Zero));
-        material.SetInt("_ZWrite", isTransparent ? 0 : 1);
-        material.renderQueue = isTransparent ? 3000 : -1;
+        // 通用属性设置
+        material.SetColor("_Color", targetColor);
+        material.SetColor("_BaseColor", targetColor); // 兼容HDRP/URP
 
-        // 控制关键字状态
-        material.SetKeyword("_ALPHATEST_ON", !isTransparent);
+        // 标准Shader特殊处理
+        if (material.shader.name.Contains("Standard"))
+        {
+            int mode = isTransparent ? 2 : 0; // 0=Opaque, 1=Cutout, 2=Fade, 3=Transparent
+            material.SetFloat("_Mode", mode);
+            material.SetOverrideTag("RenderType", isTransparent ? "Transparent" : "Opaque");
+
+            // 显式设置混合参数
+            material.SetInt("_SrcBlend", (int)BlendMode.SrcAlpha);
+            material.SetInt("_DstBlend", (int)BlendMode.OneMinusSrcAlpha);
+            material.SetInt("_ZWrite", isTransparent ? 0 : 1);
+
+            // 处理纹理属性
+            material.SetTexture("_MainTex", material.mainTexture);
+        }
+        else
+        {
+            // 通用Shader设置
+            material.SetInt("_SrcBlend", (int)(isTransparent ? BlendMode.SrcAlpha : BlendMode.One));
+            material.SetInt("_DstBlend", (int)(isTransparent ? BlendMode.OneMinusSrcAlpha : BlendMode.Zero));
+            material.SetInt("_ZWrite", isTransparent ? 0 : 1);
+        }
+
+        // 强制更新渲染队列
+        material.renderQueue = isTransparent ?
+            (int)RenderQueue.Transparent :
+            (int)RenderQueue.Geometry;
+
+        // 双面渲染控制（重要！）
+        material.SetInt("_Cull", isTransparent ? (int)CullMode.Off : (int)CullMode.Back);
+
+        // 关键字状态控制
+        material.SetKeyword("_ALPHAPREMULTIPLY_ON", false);
         material.SetKeyword("_ALPHABLEND_ON", isTransparent);
+        material.SetKeyword("_ALPHATEST_ON", false);
+
+        // 强制更新材质
+        material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
     }
 
     /// <summary>
@@ -183,6 +221,24 @@ public class ChangeRGBA : MonoBehaviour
         if (!Application.isPlaying && rend != null)
         {
             rend.sharedMaterial.color = new Color(r, g, b, a);
+        }
+    }
+
+    /// <summary>
+    /// 编辑模式下的调试
+    /// </summary>
+    void OnValidate()
+    {
+        if (!Application.isPlaying)
+        {
+            // 安全获取渲染器
+            if (rend == null) rend = GetComponent<Renderer>();
+            if (rend == null) return;
+
+            // 创建临时材质实例避免污染原始材质
+            var tempMat = new Material(rend.sharedMaterial);
+            tempMat.color = new Color(r, g, b, a);
+            rend.sharedMaterial = tempMat;
         }
     }
 }

@@ -180,6 +180,10 @@ PrefabInstance:
       propertyPath: height
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7248274760416320276, guid: 227122a5b32dd7e4793a6398dc9b8f27, type: 3}
+      propertyPath: DragOpacity
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 8914378329825035993, guid: 227122a5b32dd7e4793a6398dc9b8f27, type: 3}
       propertyPath: m_RootOrder
       value: 1

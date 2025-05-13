@@ -49,6 +49,13 @@ public class DragAndStick : DragAndStickBehaviour
     public float height = 0f;
 
     /// <summary>
+    /// 拖动时的透明度
+    /// </summary>
+    [SerializeField]
+    [Range(0f, 1f)]
+    public float DragOpacity = 0.8f;
+
+    /// <summary>
     /// 当前物体的高度
     /// </summary>
     public float Height
@@ -120,7 +127,6 @@ public class DragAndStick : DragAndStickBehaviour
         Vector3 intersectionPoint = transform.position;
         // 射线检测
         RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity);
-        Debug.Log(hits.Length);
         if (hits.Length>1)
         {
             foreach (var hit in hits.OrderBy(h=>h.distance))
@@ -177,6 +183,12 @@ public class DragAndStick : DragAndStickBehaviour
                 {
                     Destroy(drag);
                 }
+                // 如果阴影对象有添加点模块则删除
+                AddDASPoint addDASPoint = shadow.GetComponent<AddDASPoint>();
+                if (addDASPoint != null)
+                {
+                    Destroy(addDASPoint);
+                }
             }
             else
             {
@@ -193,8 +205,9 @@ public class DragAndStick : DragAndStickBehaviour
             );
             shadow.transform.position = targetPosition; // 更新虚影位置
 
+            // 修改虚影的透明度
             ChangeRGBA shadowRGBA = shadow.GetComponent<ChangeRGBA>();
-            shadowRGBA.SetOpacity(shadowOpacity); // 设置虚影透明度
+            shadowRGBA.SetColor(1,1,1,shadowOpacity);
 
             // 如果物体没有 ChangeRGBA 组件，则添加
             if (GetComponent<ChangeRGBA>() == null)
@@ -203,7 +216,7 @@ public class DragAndStick : DragAndStickBehaviour
             }
             // 物品显示为绿色
             ChangeRGBA change = GetComponent<ChangeRGBA>();
-            change.SetColor(0.5f, 1f, 0.5f, shadowOpacity); // 绿色
+            change.SetColor(0.5f, 1f, 0.5f, DragOpacity); // 绿色
         }
         else
         {
@@ -219,7 +232,27 @@ public class DragAndStick : DragAndStickBehaviour
             }
             // 物品显示为红色
             ChangeRGBA change = GetComponent<ChangeRGBA>();
-            change.SetColor(1f,0.5f, 0.5f, shadowOpacity); // 红色
+            change.SetColor(1f,0.5f, 0.5f, DragOpacity); // 红色
+        }
+    }
+
+    /// <summary>
+    /// 执行吸附逻辑。
+    /// 后续实现需要修改颜色
+    /// </summary>
+    protected override void StickToObject()
+    {
+        // 执行原有的吸附逻辑
+        base.StickToObject();
+
+        // 如果吸附成功，修改颜色
+        if (isSticked)
+        {
+            ChangeRGBA changeRGBA = GetComponent<ChangeRGBA>();
+            if (changeRGBA != null)
+            {
+                changeRGBA.SetColor(1,1,1,1); // 白色
+            }
         }
     }
 }
