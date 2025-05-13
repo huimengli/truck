@@ -257,6 +257,9 @@ public class DragAndStickBehaviour : UUIDBehavior
                 Destroy(shadow); // 吸附完成后销毁虚影
                 shadow = null;
             }
+
+            // 移动物体到吸附点位置
+            transform.position = targetPosition; // 确保物体位置与吸附点一致
         }
     }
 
