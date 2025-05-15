@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Export.AddFunc;
@@ -95,6 +96,14 @@ public class PrefabsListShow : MonoBehaviour
             {
                 GameObject prefab = PrefabDict[obj.GetComponent<UUIDBehavior>().UUID];
                 GameObject newObj = AddGameObject(prefab);
+                // 如果唯一物体不为空,则删除
+                Debug.Log(DragAndStick.GenerateObject);
+                if (DragAndStick.GenerateObject != null)
+                {
+                    DragAndStick.GenerateObject.SetActive(false);
+                    DestroyImmediate(DragAndStick.GenerateObject);
+                }
+                DragAndStick.GenerateObject = newObj;
                 GenerateObjects.Add(newObj);
                 // 使用拖拽组件
                 DragAndStick dragAndStick = newObj.GetComponent<DragAndStick>();
@@ -103,19 +112,19 @@ public class PrefabsListShow : MonoBehaviour
                     dragAndStick.OnMouseDown();
                 }
             });
-            // 添加松开鼠标事件
-            obj.GetComponent<ButtonEX>().mouseUp.AddListener(() =>
-            {
-                string UUID = obj.GetComponent<UUIDBehavior>().UUID;
-                GameObject prefab = PrefabDict[UUID];
-                int index = PrefabDict.KeysToList().IndexOf(UUID);
-                // 使用拖拽组件
-                DragAndStick dragAndStick = PrefabDict[UUID].GetComponent<DragAndStick>();
-                if (dragAndStick != null)
-                {
-                    dragAndStick.OnMouseUp();
-                }
-            });
+            //// 添加松开鼠标事件
+            //obj.GetComponent<ButtonEX>().mouseUp.AddListener(() =>
+            //{
+            //    string UUID = obj.GetComponent<UUIDBehavior>().UUID;
+            //    GameObject prefab = PrefabDict[UUID];
+            //    int index = PrefabDict.KeysToList().IndexOf(UUID);
+            //    // 使用拖拽组件
+            //    DragAndStick dragAndStick = PrefabDict[UUID].GetComponent<DragAndStick>();
+            //    if (dragAndStick != null)
+            //    {
+            //        dragAndStick.OnMouseUp();
+            //    }
+            //});
         }
 
         // 初始UI对象设置不显示
@@ -175,7 +184,7 @@ public class PrefabsListShow : MonoBehaviour
 
         // 设置渲染环境
         tempCamera.targetTexture = rt;
-        GameObject instance = Object.Instantiate(prefab);
+        GameObject instance = Instantiate(prefab);
         instance.SetActive(true);
 
         // 执行渲染
@@ -202,9 +211,9 @@ public class PrefabsListShow : MonoBehaviour
         // 清理资源
         RenderTexture.active = null;
         tempCamera.targetTexture = null;
-        Object.DestroyImmediate(rt);
-        Object.DestroyImmediate(tempCamera.gameObject);
-        Object.DestroyImmediate(instance);
+        DestroyImmediate(rt);
+        DestroyImmediate(tempCamera.gameObject);
+        DestroyImmediate(instance);
 
         // 返回精灵
         return sprite;

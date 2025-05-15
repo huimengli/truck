@@ -268,7 +268,7 @@ public class DragAndStickBehaviour : UUIDBehavior
     /// </summary>
     /// <param name="points">Transform数组。</param>
     /// <returns>中心点位置。</returns>
-    protected private Vector3 CalculateCenter(Transform[] points)
+    protected Vector3 CalculateCenter(Transform[] points)
     {
         Vector3 center = Vector3.zero;
         foreach (var point in points)

@@ -14,6 +14,11 @@ using System.Collections.Generic;
 public class DragAndStick : DragAndStickBehaviour
 {
     /// <summary>
+    /// UI生成的物体,全局唯一
+    /// </summary>
+    public static GameObject GenerateObject = null;
+
+    /// <summary>
     /// 游戏调用代码
     /// </summary>
     [ReadOnly]
@@ -249,4 +254,21 @@ public class DragAndStick : DragAndStickBehaviour
         }
     }
 
+    /// <summary>
+    /// 重写鼠标弹起事件
+    /// </summary>
+    public new void OnMouseUp()
+    {
+        base.OnMouseUp(); // 调用基类的鼠标抬起事件
+
+        // 删除唯一组件
+        if (GenerateObject != null)
+        {
+            if (isSticking==false)
+            {
+                DestroyImmediate(GenerateObject);
+            }
+            GenerateObject = null;
+        }
+    }
 }
