@@ -257,7 +257,7 @@ namespace LT_Code.UnityExtra
         }
 
         /// <summary>
-        /// 鼠标双击事件
+        /// 鼠标按下事件
         /// </summary>
         [Serializable]
         public class ButtonMouseDownEvent : UnityEvent { }

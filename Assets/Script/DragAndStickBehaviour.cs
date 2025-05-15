@@ -281,7 +281,7 @@ public class DragAndStickBehaviour : UUIDBehavior
     /// <summary>
     /// 当鼠标按下时，开始拖拽。
     /// </summary>
-    protected void OnMouseDown()
+    public void OnMouseDown()
     {
         isDragging = true; // 启用拖拽
         isSticked = false; // 重置吸附状态
@@ -290,7 +290,7 @@ public class DragAndStickBehaviour : UUIDBehavior
     /// <summary>
     /// 当鼠标松开时，停止拖拽并开始吸附。
     /// </summary>
-    protected void OnMouseUp()
+    public void OnMouseUp()
     {
         isDragging = false; // 停止拖拽
         if (shadow != null && shadow.activeSelf)
