@@ -111,6 +111,12 @@ public class DragAndStickBehaviour : UUIDBehavior
     /// </summary>
     protected void Upgrade()
     {
+        // 添加右键点击触发物品旋转功能
+        if (isDragging && Input.GetMouseButtonUp(1))
+        {
+            transform.rotation *= Quaternion.Euler(0, 90, 0); // 在当前旋转基础上增加90度
+        }
+
         if (isDragging)
         {
             DragObject(); // 如果正在拖拽，执行拖拽逻辑
@@ -293,9 +299,23 @@ public class DragAndStickBehaviour : UUIDBehavior
     public void OnMouseUp()
     {
         isDragging = false; // 停止拖拽
-        if (shadow != null && shadow.activeSelf)
+        if (shadow != null)
         {
-            isSticking = true; // 如果虚影可见，开始吸附
+            isSticking = shadow.activeSelf; // 如果虚影可见，开始吸附
+        }
+    }
+
+    protected void OnDestroy()
+    {
+        if (shadow != null)
+        {
+            Destroy(shadow); // 销毁虚影
+            shadow = null;
+        }
+        // 清除吸附点数据
+        if (_used.ContainsKey(UUID))
+        {
+            _used.Remove(UUID);
         }
     }
 }

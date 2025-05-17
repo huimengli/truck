@@ -613,6 +613,7 @@ MonoBehaviour:
   - {fileID: 8401101909180913001, guid: 5f4e744ead7fa4446acf06b7f7d25d45, type: 3}
   - {fileID: 9022362623300699043, guid: 9b8fea6f87c769b4ca7c4a25137cffb4, type: 3}
   - {fileID: 340715438635465274, guid: 53697dafc3e5ff34bb724e9f728d197b, type: 3}
+  - {fileID: 8914378329825035996, guid: 227122a5b32dd7e4793a6398dc9b8f27, type: 3}
   UIObject: {fileID: 845057896}
   changePosition: {x: 0, y: -200}
   PrefabSprites: []
@@ -694,8 +695,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.3240351, y: -0.00083783944, z: 0.00028711592, w: 0.9460447}
-  m_LocalPosition: {x: 0.15635733, y: 5.0978684, z: -6.3507237}
+  m_LocalRotation: {x: 0.3984347, y: -0.000004287809, z: 0.0000016735066, w: 0.9171967}
+  m_LocalPosition: {x: -0.073428914, y: 11.778404, z: -10.962849}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

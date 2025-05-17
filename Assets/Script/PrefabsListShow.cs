@@ -156,6 +156,17 @@ public class PrefabsListShow : MonoBehaviour
         // 生成预制体
         GameObject obj = Instantiate(prefab, intersectionPoint, Quaternion.identity);
 
+        // 删除预制件下面的碰撞体
+        Collider collider = obj.GetComponent<Collider>();
+        Collider[] childColliders = obj.GetComponentsInChildren<Collider>();
+        foreach (var c in childColliders)
+        {
+            if (collider != c)
+            {
+                Destroy(c);
+            }
+        }
+
         // 判断物体是否含有 DragAndStick 组件
         if (obj.GetComponent<DragAndStick>() == null)
         {

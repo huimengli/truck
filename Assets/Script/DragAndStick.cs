@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using Export.AddFunc;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using Export.BehaviourEX;
 
 /// <summary>
 /// 拖拽功能实现
@@ -112,12 +113,6 @@ public class DragAndStick : DragAndStickBehaviour
     void Update()
     {
         Upgrade(); // 调用基类的更新逻辑
-
-        // 添加右键点击触发物品旋转功能
-        if (isDragging && Input.GetMouseButtonUp(1))
-        {
-            transform.rotation *= Quaternion.Euler(0, 90, 0); // 在当前旋转基础上增加90度
-        }
 
         // 更新完成后,如果吸附成功则修改颜色
         if (isSticked)
@@ -254,12 +249,19 @@ public class DragAndStick : DragAndStickBehaviour
         }
     }
 
+    public new void OnMouseDown()
+    {
+        base.OnMouseDown();
+        Debug.Log($"{UUID} OnMouseDown");
+    }
+
     /// <summary>
     /// 重写鼠标弹起事件
     /// </summary>
     public new void OnMouseUp()
     {
-        base.OnMouseUp(); // 调用基类的鼠标抬起事件
+        base.OnMouseUp();
+        Debug.Log($"{UUID} OnMouseUp");
 
         // 删除唯一组件
         if (GenerateObject != null)
@@ -269,6 +271,13 @@ public class DragAndStick : DragAndStickBehaviour
                 DestroyImmediate(GenerateObject);
             }
             GenerateObject = null;
+        }else
+        {
+            if (isSticking==false)
+            {
+                // 如果吸附失败则删除当前物体
+                Destroy(gameObject);
+            }
         }
     }
 }
