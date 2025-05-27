@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Export.AddFunc;
 using Export.Attribute;
 using Export.BehaviourEX;
+using Export.Tools;
 using LT_Code.UnityExtra;
 using UnityEngine;
 using UnityEngine.UI;
@@ -180,39 +181,48 @@ public class PrefabsListShow : MonoBehaviour
 
     public static Sprite ConvertPrefabToSprite(GameObject prefab, Vector2 imageSize)
     {
-        // 创建一个临时相机和渲染纹理
-        var tempCamera = new GameObject("TempCamera").AddComponent<Camera>();
-        tempCamera.cullingMask = 0;// 1 << LayerMask.NameToLayer("UI");
+        // 创建临时相机
+        GameObject tempCameraGO = Item.Or(GameObject.Find("TempCamera"), () =>
+        {
+            return new GameObject("TempCamera");
+        });
+        var tempCamera = tempCameraGO.HasComponent<Camera>() ? tempCameraGO.GetComponent<Camera>(): tempCameraGO.AddComponent<Camera>();
+        tempCamera.cullingMask = -1; // 渲染所有层
         tempCamera.clearFlags = CameraClearFlags.SolidColor;
         tempCamera.backgroundColor = Color.clear;
+        tempCamera.orthographic = true;
+        tempCamera.orthographicSize = 2;
+        tempCamera.transform.position = new Vector3(0, -10, -10);
 
+        // 设置RenderTexture
         RenderTexture rt = new RenderTexture(
             (int)imageSize.x,
             (int)imageSize.y,
             24,
             RenderTextureFormat.ARGB32
         );
-
-        // 设置渲染环境
         tempCamera.targetTexture = rt;
-        GameObject instance = Instantiate(prefab);
-        instance.SetActive(true);
 
-        // 执行渲染
+        // 实例化Prefab并调整位置
+        GameObject instance = Instantiate(prefab, Vector3.zero, Quaternion.identity, tempCameraGO.transform);
+        instance.SetActive(true);
+        instance.transform.localPosition = new Vector3(
+            0,
+            0,
+            5
+        ); // 设置位置为相机前方
+        instance.transform.rotation = Quaternion.Euler(-45, 20, 0); // 设置旋转为正面朝向相机
+
+        // 渲染
         tempCamera.Render();
         RenderTexture.active = rt;
 
-        // 转换纹理数据
-        Texture2D texture = new Texture2D(
-            rt.width,
-            rt.height,
-            TextureFormat.ARGB32,
-            false
-        );
+        // 生成Texture2D
+        Texture2D texture = new Texture2D(rt.width, rt.height, TextureFormat.ARGB32, false);
         texture.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
         texture.Apply();
 
-        // 创建精灵
+        // 创建Sprite
         Sprite sprite = Sprite.Create(
             texture,
             new Rect(0, 0, rt.width, rt.height),
@@ -222,11 +232,10 @@ public class PrefabsListShow : MonoBehaviour
         // 清理资源
         RenderTexture.active = null;
         tempCamera.targetTexture = null;
-        DestroyImmediate(rt);
-        DestroyImmediate(tempCamera.gameObject);
-        DestroyImmediate(instance);
+        //DestroyImmediate(rt);
+        //DestroyImmediate(tempCameraGO);
+        //DestroyImmediate(instance);
 
-        // 返回精灵
         return sprite;
     }
 }
